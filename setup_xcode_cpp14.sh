@@ -14,6 +14,6 @@ mkdir -p build_wasm
 pushd build_wasm
 
 # -DCMAKE_FIND_ROOT_PATH=$PATH_TO_BOOST_BUILT_BY_EMSCRIPTEN
-emcmake cmake -DCMAKE_BUILD_TYPE=Release -Dstlab_testing=ON -DCONAN_DISABLE_CHECK_COMPILER=1 .. && make && ctest --timeout 60 --verbose
+emcmake cmake -DCMAKE_BUILD_TYPE=Release -Dstlab_testing=ON -Dstlab.task_system="intel_tbb" -DCONAN_DISABLE_CHECK_COMPILER=1 .. && make && ctest --timeout 60 --verbose
 
 popd

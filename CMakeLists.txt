@@ -21,6 +21,9 @@ project( stlab VERSION 1.6.2 LANGUAGES CXX )
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(EMSCRIPTEN)
+  set(TBB_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/oneTBB")
+  set(TBB_LIBS_ROOT "${TBB_ROOT}/build_wasm/clang_14.0_cxx11_32_release")
+  set(TBB_LIBS_INCLUDE_DIRECTORY "${TBB_ROOT}/include")
   set(CMAKE_AR "emar")
   set(CMAKE_RANLIB "emranlib")
   set(CXX_target "em")
@@ -87,6 +90,13 @@ add_library( stlab::stlab ALIAS stlab )
 target_include_directories( stlab INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:include> )
+
+if(EMSCRIPTEN)
+  target_include_directories( stlab INTERFACE
+    $<BUILD_INTERFACE:${TBB_LIBS_INCLUDE_DIRECTORY}> )
+
+    target_link_libraries( stlab INTERFACE ${TBB_LIBS_ROOT}/libtbb.a ${TBB_LIBS_ROOT}/libtbbmalloc.a )
+endif()
 
 #
 # As of CMake version 3.1, the FindThreads CMake module supplies an imported
